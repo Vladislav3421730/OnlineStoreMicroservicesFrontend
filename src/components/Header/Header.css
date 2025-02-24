@@ -1,0 +1,6 @@
+.users-buttons {
+    display: flex;
+    gap: 20px; 
+    margin-left: auto; 
+    padding-right: 20px;
+}

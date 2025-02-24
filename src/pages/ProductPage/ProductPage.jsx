@@ -1,0 +1,113 @@
+import React from 'react';
+import { useLoaderData } from 'react-router-dom';
+import {api} from '../../api';
+import  './ProductPage.css';
+
+export const productLoader = async ({ params }) => {
+  const { id } = params;
+  try {
+      const response = await api.get(`/products/${id}`);
+      return response.data;
+  } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Товар не найден';
+      const errorStatus = error.response?.status || 500;
+
+      throw new Response(
+          JSON.stringify({ message: errorMessage }),
+          {
+              status: errorStatus,
+              headers: { "Content-Type": "application/json" }
+          }
+      );
+  }
+};
+
+
+
+const ProductPage = () => {
+  const product = useLoaderData(); 
+
+  return (
+    <div className="container-fluid mt-4">
+      <div className="row">
+        <div className="col-lg-1 col-md-0"></div>
+        <div className="col-lg-10 col-md-12">
+          {product.imageList && product.imageList.length > 0 ? (
+           <div
+             id="carouselExampleIndicators"
+             className="carousel slide"
+             data-bs-ride="carousel"
+           >
+             <div className="carousel-indicators">
+               {product.imageList.map((image, index) => (
+                 <button
+                   key={image.id}
+                   type="button"
+                   data-bs-target="#carouselExampleIndicators"
+                   data-bs-slide-to={index}
+                   className={index === 0 ? 'active' : ''}
+                   aria-current={index === 0 ? 'true' : undefined}
+                   aria-label={`Слайд ${index + 1}`}
+                 ></button>
+               ))}
+             </div>
+           
+             <div className="carousel-inner">
+               {product.imageList.map((image, index) => (
+                 <div key={image.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                   <img
+                     className="d-block w-100"
+                     src={`http://localhost:8082/upload/${image.filePath}`}
+                     alt={`Изображение товара ${index + 1}`}
+                   />
+                 </div>
+               ))}
+             </div>
+           
+             <button
+               className="carousel-control-prev"
+               type="button"
+               data-bs-target="#carouselExampleIndicators"
+               data-bs-slide="prev"
+             >
+               <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+               <span className="visually-hidden">Предыдущее</span>
+             </button>
+             <button
+               className="carousel-control-next"
+               type="button"
+               data-bs-target="#carouselExampleIndicators"
+               data-bs-slide="next"
+             >
+               <span className="carousel-control-next-icon" aria-hidden="true"></span>
+               <span className="visually-hidden">Следующее</span>
+             </button>
+           </div>
+          ) : (
+            <p>Изображения товара отсутствуют</p>
+          )}
+
+          <h4>{product.coast} ₽</h4>
+          <h5>{product.title}</h5>
+          <p className="card-text">Категория: {product.category}</p>
+          <p className="text-justify">{product.description}</p>
+          <p className="card-text">
+            {product.amount === 0
+              ? 'Товар отсутствует на складе'
+              : `Осталось на складе: ${product.amount}`}
+          </p>
+
+          <form action="/user/cart/add" method="POST">
+            <input type="hidden" name="id" value={product.id} />
+            <button type="submit" className="btn btn-primary mt-2">
+              Добавить в корзину
+            </button>
+          </form>
+        </div>
+        <div className="col-lg-1 col-md-0"></div>
+      </div>
+    </div>
+  );
+};
+
+export { ProductPage };

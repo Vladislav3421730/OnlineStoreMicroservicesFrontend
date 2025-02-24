@@ -1,0 +1,17 @@
+
+.card-link {
+    text-decoration: none; 
+    color: inherit;
+  }
+.card {
+    transition: all 0.3s ease-in-out;
+    color: black;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+.p1 {
+    color: brown;
+    text-decoration: underline;
+}
