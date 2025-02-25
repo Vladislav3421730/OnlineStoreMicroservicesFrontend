@@ -3,25 +3,28 @@ import { Card } from "../components/Card/Card";
 import { getProducts } from "../api";
 import { FadeLoader } from "react-spinners";
 import { CustomPagination } from "../components/Pagination";
+import { CustomModal } from "../components/CustomModal";
+import { Filters } from "../components/Filters";
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const [open, setOpen] = useState(false);
   const [filters, setFilters] = useState({
     sort: "",
     title: "",
     category: "",
     minPrice: "",
-    maxPrice: ""
+    maxPrice: "",
   });
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -31,12 +34,17 @@ const Homepage = () => {
 
   const applyFilters = () => {
     getProducts(setProducts, setTotalPages, setLoading, currentPage, filters);
+    setOpen(false);
   };
 
   const handlePageChange = (newPage) => {
     if (newPage >= 0 && newPage < totalPages) {
       setCurrentPage(newPage);
     }
+  };
+
+  const handleOnClickFilter = () => {
+    setOpen(true);
   };
 
   return (
@@ -46,57 +54,39 @@ const Homepage = () => {
           <div className="row">
             <div className="col-lg-1 col-md-0"></div>
             <div className="col-lg-10 col-md-12">
-              <div className="mb-4">
-                <input
-                  type="text"
-                  name="title"
-                  value={filters.title}
-                  onChange={handleFilterChange}
-                  placeholder="Поиск по названию"
-                  className="form-control mb-2"
-                />
-                <input
-                  type="text"
-                  name="category"
-                  value={filters.category}
-                  onChange={handleFilterChange}
-                  placeholder="Категория"
-                  className="form-control mb-2"
-                />
-                <input
-                  type="number"
-                  name="minPrice"
-                  value={filters.minPrice}
-                  onChange={handleFilterChange}
-                  placeholder="Минимальная цена"
-                  className="form-control mb-2"
-                />
-                <input
-                  type="number"
-                  name="maxPrice"
-                  value={filters.maxPrice}
-                  onChange={handleFilterChange}
-                  placeholder="Максимальная цена"
-                  className="form-control mb-2"
-                />
-                <select
-                  name="sort"
-                  value={filters.sort}
-                  onChange={handleFilterChange}
-                  className="form-control mb-2"
-                >
-                  <option value="">Выберите сортировку</option>
-                  <option value="cheap">По цене (от дешевых к дорогим)</option>
-                  <option value="expensive">По цене (от дорогих к дешевым)</option>
-                  <option value="alphabet">По алфавиту</option>
-                </select>
-                <button onClick={applyFilters} className="btn btn-primary mt-2">
-                  Применить фильтры
-                </button>
+              <div className="d-flex justify-content-around align-items-center mt-3 mb-3">
+              <div className="input-group w-100 mx-2">
+                <div className="input-group">
+                  <input
+                    type="text"
+                    name="title"
+                    value={filters.title}
+                    onChange={handleFilterChange}
+                    placeholder="Поиск по названию"
+                    className="form-control"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="button-addon2"
+                    onClick={applyFilters}
+                  >
+                    Найти
+                  </button>
+                </div>
+                <CustomModal open={open} onClose={() => setOpen(false)}>
+                  <Filters filters={filters} applyFilters={applyFilters} handleFilterChange={handleFilterChange} />
+                </CustomModal>
               </div>
-
+              <button onClick={handleOnClickFilter} className="btn btn-primary">
+                Фильтры
+              </button>
+              </div>
               {loading ? (
-                <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ height: "50vh" }}
+                >
                   <FadeLoader height={16} radius={6} width={5} />
                 </div>
               ) : products.length === 0 ? (
@@ -105,12 +95,19 @@ const Homepage = () => {
                 <>
                   <div className="row">
                     {products.map((product) => (
-                      <div key={product.id} className="col-lg-3 col-md-4 col-sm-6">
+                      <div
+                        key={product.id}
+                        className="col-lg-3 col-md-4 col-sm-6"
+                      >
                         <Card product={product} />
                       </div>
                     ))}
                   </div>
-                  <CustomPagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} />
+                  <CustomPagination
+                    handlePageChange={handlePageChange}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                  />
                 </>
               )}
             </div>

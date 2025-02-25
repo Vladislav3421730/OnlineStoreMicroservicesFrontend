@@ -1,0 +1,13 @@
+.status,
+.delivered {
+    display: inline;
+    background-color: rgba(67, 67, 168, 0.7);
+    height: 36px;
+    padding: 5px;
+    padding-inline: 10px;
+    border: 0;
+    border-radius: 18px;
+}
+.delivered{
+    background-color: #22e722;
+}

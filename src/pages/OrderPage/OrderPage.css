@@ -1,0 +1,36 @@
+
+img {
+    width: 7rem;
+    height: 16rem;
+}
+
+.card {
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+* {
+    text-decoration: none;
+}
+
+.status,
+.delivered {
+    display: inline;
+    background-color: rgba(67, 67, 168, 0.7);
+    height: 36px;
+    padding: 5px;
+    padding-inline: 10px;
+    border: 0;
+    border-radius: 18px;
+}
+.delivered{
+    background-color: #22e722;
+}
+.orderInfo {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
