@@ -11,31 +11,25 @@ api.interceptors.response.use(
         const originalRequest = error.config;
 
         if (error.response && error.response.status === 401) {
-            try {
-                const refreshToken = localStorage.getItem('refreshToken');
-                
-                if (!refreshToken) {
-                    window.location.href = '/login';
-                    return Promise.reject(error); 
-                }
-                const refreshResponse = await api.post('/auth/refreshToken', { refreshToken });
-                localStorage.setItem('accessToken', refreshResponse.data.accessToken);
-                localStorage.setItem('refreshToken', refreshResponse.data.refreshToken);
 
-                originalRequest.headers['Authorization'] = `Bearer ${refreshResponse.data.accessToken}`;
-                return api(originalRequest);
-
-            } catch (refreshError) {
-                if (refreshError.response && refreshError.response.status === 401) {
-                    console.log('Refresh token expired', refreshError.response.data);
-                    window.location.href = '/login';
-                } else if (refreshError.response && refreshError.response.status === 403) {
-                    console.log('Forbidden access', refreshError.response.data);
-                    window.location.href = '/error403';
-                }
-
-                return Promise.reject(refreshError); 
+            if (originalRequest.url === '/auth/refreshToken') {
+                window.location.href = '/login';
+                return Promise.reject(error);
             }
+
+            originalRequest._retry = true;
+            const refreshToken = localStorage.getItem('refreshToken');
+
+            if (!refreshToken) {
+                window.location.href = '/login';
+                return Promise.reject(error);
+            }
+            const refreshResponse = await api.post('/auth/refreshToken', { refreshToken });
+            localStorage.setItem('accessToken', refreshResponse.data.accessToken);
+            localStorage.setItem('refreshToken', refreshResponse.data.refreshToken);
+
+            originalRequest.headers['Authorization'] = `Bearer ${refreshResponse.data.accessToken}`;
+            return api(originalRequest);
         }
         return Promise.reject(error);
     }
@@ -52,7 +46,7 @@ export async function getProducts(setProducts, setTotalPages, setLoading, curren
     if (minPrice) queryParams += `&minPrice=${minPrice}`;
     if (maxPrice) queryParams += `&maxPrice=${maxPrice}`;
     console.log(queryParams);
-  
+
     api
         .get(`/products${queryParams}`)
         .then((response) => {
@@ -67,7 +61,7 @@ export async function getOrders(setOrders, setTotalPages, setLoading, currentPag
     setLoading(true);
     let queryParams = `?page=${currentPage}`;
     api
-        .get(`/order${queryParams}`,{
+        .get(`/order${queryParams}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -80,12 +74,12 @@ export async function getOrders(setOrders, setTotalPages, setLoading, currentPag
         .finally(() => setLoading(false));
 }
 
-export async function getOrdersByEmail(email, page, setOrders, setTotalPages, setLoading)  {
+export async function getOrdersByEmail(email, page, setOrders, setTotalPages, setLoading) {
     setLoading(true);
     let queryParams = `?page=${page}`;
     if (email) queryParams += `&email=${email}`;
     try {
-        const response = await api.get(`order/user/email${queryParams}`,{
+        const response = await api.get(`/order/user/id${queryParams}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -99,11 +93,29 @@ export async function getOrdersByEmail(email, page, setOrders, setTotalPages, se
     setLoading(false);
 };
 
-export async function getUsers(page, setUsers, setTotalPages, setLoading)  {
+export async function getUserByEmail(email, setUsers, setTotalPages, setLoading) {
+    setLoading(true);
+    try {
+        const response = await api.get(`user/email?email=${email}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+        setUsers([response.data]);
+    } catch (error) {
+        console.error("Error while find users", error);
+        setUsers([]);
+    }
+    setTotalPages(1);
+    setLoading(false);
+};
+
+
+export async function getUsers(page, setUsers, setTotalPages, setLoading) {
     setLoading(true);
     let queryParams = `?page=${page}`;
     try {
-        const response = await api.get(`user/all${queryParams}`,{
+        const response = await api.get(`user/all${queryParams}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`
             }
@@ -117,7 +129,34 @@ export async function getUsers(page, setUsers, setTotalPages, setLoading)  {
     setLoading(false);
 };
 
+export async function getUserOrders(id, page, setOrders, setTotalPages, setLoading) {
+    setLoading(true);
+    try {
+        const response = await api.get(`order/user/id/${id}?page=${page}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        });
+        setOrders(response.data.content);
+        setTotalPages(response.data.totalPages);
+    } catch (error) {
+        console.error("Error while find users", error);
+        setOrders([]);
+    }
+    setLoading(false);
+};
 
-
+export async function getUserData(setUser) {
+    try {
+      const response = await api.get("user", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setUser(response.data);
+    } catch (error) {
+      console.error("Ошибка при получении данных пользователя:", error);
+    }
+  };
 
 export { api };

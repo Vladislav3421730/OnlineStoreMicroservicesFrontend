@@ -70,8 +70,10 @@ const OrderPage = () => {
             <br></br>
             <strong>Заказ #{order.id}</strong><br></br>
             <strong>email: {order.email}</strong><br></br>
+            <div className="mt-2 mb-2">
             <strong>Статус заказа: <p className={order.status == 'доставлен' ? 'delivered mx-2' : 'status mx-2'}
-            > {order.status} </p> </strong><br></br>
+            > {order.status} </p> </strong>
+            </div>
             <strong>Сумма заказа: {order.totalPrice}</strong><br></br>
             <strong>Адресс закакза: {order.address.region}, {order.address.town},
                 {order.address.exactAddress}, {order.address.postalCode}</strong><br></br>

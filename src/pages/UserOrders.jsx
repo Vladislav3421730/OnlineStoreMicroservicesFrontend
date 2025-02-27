@@ -1,26 +1,19 @@
-import { useState, useEffect } from 'react';
-import { getOrders, getOrdersByEmail } from '../api';
-import { FadeLoader } from "react-spinners";
-import { Link } from 'react-router-dom';
-import { CustomPagination } from "../components/Pagination";
-import { useAuth } from '../hook/useAuth';
 
-const OrdersPage = () => {
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
+import { CustomPagination } from "../components/Pagination";
+import { getUserOrders } from "../api";
+import { useAuth } from "../hook/useAuth";
+
+const UserOrders = () => {
+
+    const { id } = useParams();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
-    const [email, setEmail] = useState('');
-    const [searchEmail, setSearchEmail] = useState('');
     const {isAuthorized} = useAuth()
-
-    useEffect(() => {
-        if (searchEmail) {
-            getOrdersByEmail(searchEmail, currentPage, setOrders, setTotalPages, setLoading);
-        } else {
-            getOrders(setOrders, setTotalPages, setLoading, currentPage);
-        }
-    }, [currentPage, searchEmail]);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 0 && newPage < totalPages) {
@@ -28,26 +21,12 @@ const OrdersPage = () => {
         }
     };
 
-    const handleSearch = () => {
-        setSearchEmail(email);
-        setCurrentPage(0);
-    };
+    useEffect(() => {
+        getUserOrders(id, currentPage, setOrders, setTotalPages, setLoading)
+    }, [currentPage]);
 
     return (
         <div className="container mt-4">
-            <div className="d-flex mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Введите email пользователя"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <button className="btn btn-primary ms-2" onClick={handleSearch}>
-                    Поиск
-                </button>
-            </div>
-
             {(loading || !isAuthorized) ? (
                 <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
                     <FadeLoader height={16} radius={6} width={5} />
@@ -87,6 +66,6 @@ const OrdersPage = () => {
             )}
         </div>
     );
-};
+}
 
-export { OrdersPage };
+export { UserOrders }

@@ -16,7 +16,8 @@ const LoginPage = () => {
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('refreshToken', response.data.refreshToken);
             const from = location.state?.from?.pathname || '/';
-            navigate(from);
+            navigate(from, { replace: true });
+            window.location.reload();
         } catch (err) {
             if(err.response.status === 403) {
                 window.location.href = '/error403';

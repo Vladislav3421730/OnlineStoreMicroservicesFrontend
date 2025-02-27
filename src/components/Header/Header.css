@@ -1,6 +1,55 @@
 .users-buttons {
     display: flex;
-    gap: 20px; 
+    align-items: center;
     margin-left: auto; 
-    padding-right: 20px;
+    padding-right: 10px;
+}
+.image {
+    margin-left: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.inscription {
+    color: white;
+    text-decoration: none;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.inscription:hover {
+    color: white;
+    scale: 1.05;
+    transition: all 0.2s ease-in-out;
+}
+
+.profileImage {
+    width: 45px;
+    height: 45px;
+    margin-left: 5px;
+    background-color: white;
+    padding: 0;
+    border-style: solid;
+    border-color: white;
+    border-radius: 50%;
+}
+
+.active {
+    text-decoration: none;
+    padding: 5px;
+    padding-inline: 10px;
+    background-color: white;
+    border-radius: 10px;
+    color: #282c34;
+    font-weight: 500;
+    transition: all ease-in-out 0.2s;
+}
+
+.active:hover {
+    color: #282c34;
+    transition: scale(1.1)
 }

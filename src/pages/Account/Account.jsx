@@ -1,0 +1,99 @@
+import { useEffect, useState } from "react";
+import { api } from "../../api";
+import './Account.css'
+import '../OrderPage/OrderPage.css'
+import { FadeLoader } from "react-spinners";
+import { getUserData } from "../../api";
+
+const Account = () => {
+  const [user, setUser] = useState(null);
+
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    await api.delete("auth/logout", {
+      data: { refreshToken }
+    });
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
+    window.location.href = "/"
+  }
+
+  useEffect(() => {
+    getUserData(setUser);
+  }, []);
+
+
+
+  if (!user) {
+    return
+    <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
+      <FadeLoader height={16} radius={6} width={5} />
+    </div>
+  }
+
+  return (
+    <div className="container mt-4">
+      <div className="d-flex align-items-center">
+        <h2>Личный кабинет</h2>
+        <button onClick={handleLogout} className="mx-4 btn btn-danger">Выйти</button>
+      </div>
+      <p>Имя пользователя: {user.username}</p>
+      <p>Email: {user.email}</p>
+      <p>Номер телефона: {user.phoneNumber}</p>
+
+      <h3>Ваши заказы:</h3>
+      <div className="row">
+        {user.orders.map((order) => (
+          <div key={order.id} className="col-12 mb-4">
+            <div className="card-body">
+              <h4>Заказ №{order.id}</h4>
+              <p>Дата создания: {order.createdAt}</p>
+              <p className="mb-2 mt-2">Статус
+                <p className={order.status == 'доставлен' ? 'delivered mx-2' : 'status mx-2'} >{order.status}</p>
+              </p>
+              <p>
+                Адрес: {order.address.region}, {order.address.town},{" "}
+                {order.address.exactAddress}
+              </p>
+              <p>Итого: {order.totalPrice} руб.</p>
+              <h5 className="mb-4">Товары:</h5>
+              <div className="row">
+                {order.orderItems.map((orderItem) => (
+                  <div key={orderItem.id} className="col-lg-3 col-md-6">
+                    <div
+                      className="card mt-2 mb-2"
+                      style={{ width: "17.5rem", height: "24rem" }}
+                    >
+                      <a href={`/products/${orderItem.product.id}`}>
+                        <img
+                          src={
+                            orderItem.product.imageList.length > 0
+                              ? `http://localhost:8082/upload/${orderItem.product.imageList[0].filePath}`
+                              : "https://brilliant24.ru/files/cat/template_01.png"
+                          }
+                          className="card-img-top"
+                          alt={orderItem.product.imageList[0].filePath}
+                        />
+                      </a>
+                      <div className="card-body">
+                        <strong>{orderItem.product.coast} руб.</strong>
+                        <br />
+                        {orderItem.product.title}
+                        <br />
+                        {orderItem.product.category}
+                        <br />
+                        Количество: {orderItem.amount}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export { Account };
