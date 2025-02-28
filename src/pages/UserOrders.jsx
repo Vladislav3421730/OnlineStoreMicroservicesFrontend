@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 import { CustomPagination } from "../components/Pagination";
-import { getUserOrders } from "../api";
+import { getUserOrders } from "../apiMarket";
 import { useAuth } from "../hook/useAuth";
 
 const UserOrders = () => {

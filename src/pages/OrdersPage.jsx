@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getOrders, getOrdersByEmail } from '../api';
+import { getOrders, getOrdersByEmail } from '../apiMarket';
 import { FadeLoader } from "react-spinners";
 import { Link } from 'react-router-dom';
 import { CustomPagination } from "../components/Pagination";

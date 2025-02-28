@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Card } from "../components/Card/Card";
-import { getProducts } from "../api";
+import { Cart } from "../components/Cart/Cart";
+import { getProducts } from "../apiMarket";
 import { FadeLoader } from "react-spinners";
 import { CustomPagination } from "../components/Pagination";
 import { CustomModal } from "../components/CustomModal";
 import { Filters } from "../components/Filters";
+
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
@@ -99,7 +100,7 @@ const Homepage = () => {
                         key={product.id}
                         className="col-lg-3 col-md-4 col-sm-6"
                       >
-                        <Card product={product} />
+                        <Cart product={product} />
                       </div>
                     ))}
                   </div>

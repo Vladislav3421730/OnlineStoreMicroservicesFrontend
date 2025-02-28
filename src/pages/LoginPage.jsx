@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { api } from '../api'; 
+import { api } from '../apiMarket'; 
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');

@@ -1,21 +1,32 @@
 import { Link } from "react-router-dom";
-import "./Card.css";
+import { addProductTocart } from "../../apiMarket";
+import { useState } from "react";
+import { API_IMAGE_BASE_URL, NO_PHOTO_URL } from "../../config";
+import "./Cart.css";
 
-const Card = ({ product }) => {
+const Cart = ({ product }) => {
+
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = (id) => {
+    addProductTocart(id);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1300);
+  };
+
   return (
     <div className="col-lg-3 col-md-6">
-
       <div className="card mt-2 mb-2" style={{ width: "17.5rem", height: "26.5rem" }}>
         <Link to={`/products/${product.id}`} className="card-link">
           {product.imageList.length === 0 ? (
             <img
-              src="https://brilliant24.ru/files/cat/template_01.png"
+              src={NO_PHOTO_URL}
               className="card-img-top"
               alt="default"
             />
           ) : (
             <img
-              src={`http://localhost:8082/upload/${product.imageList[0].filePath}`}
+              src={`${API_IMAGE_BASE_URL}/${product.imageList[0].filePath}`}
               style={{ width: "17.5rem", height: "16rem" }}
               className="card-img-top"
               alt={product.title}
@@ -36,16 +47,17 @@ const Card = ({ product }) => {
             <span>Осталось в наличии: {product.amount}</span>
           )}
           <br />
-          <form action="/user/cart/add" method="POST">
-            <input type="hidden" name="id" value={product.id} />
-            <button type="submit" className="btn btn-primary w-100 mt-1 btn-block">
-              Добавить в корзину
-            </button>
-          </form>
+          <button type="submit" onClick={() => { handleAdd(product.id) }}
+            className="btn btn-primary w-100 mt-1 btn-block"
+            disabled={product.amount === 0}
+          >
+            Добавить в корзину
+          </button>
+          {added && <div className="added-message">Добавлено в корзину</div>}
         </div>
       </div>
     </div>
   );
 };
 
-export { Card };
+export { Cart };

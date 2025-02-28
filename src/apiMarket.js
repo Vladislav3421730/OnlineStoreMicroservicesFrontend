@@ -146,17 +146,32 @@ export async function getUserOrders(id, page, setOrders, setTotalPages, setLoadi
     setLoading(false);
 };
 
-export async function getUserData(setUser) {
+export async function getUserData(setUser, setCarts) {
     try {
-      const response = await api.get("user", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-      setUser(response.data);
+        const response = await api.get("user", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        });
+        setUser(response.data);
+        if (setCarts != undefined) {
+            setCarts(response.data.carts)
+        }
     } catch (error) {
-      console.error("Ошибка при получении данных пользователя:", error);
+        console.error("Error: ", error);
     }
-  };
+};
+
+export async function addProductTocart(id) {
+    try {
+        const response = await api.post(`cart/add/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        });
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+};
 
 export { api };

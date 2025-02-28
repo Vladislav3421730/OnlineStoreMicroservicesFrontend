@@ -1,7 +1,8 @@
 import React from "react";
 import { useLoaderData } from "react-router-dom";
-import { api } from "../../api";
+import { api } from "../../apiMarket";
 import "./ProductPage.css";
+import { API_IMAGE_BASE_URL } from "../../config";
 
 export const productLoader = async ({ params }) => {
   const { id } = params;
@@ -55,7 +56,7 @@ const ProductPage = () => {
                   >
                     <img
                       className="d-block w-100"
-                      src={`http://localhost:8082/upload/${image.filePath}`}
+                      src={`${API_IMAGE_BASE_URL}/${image.filePath}`}
                       alt={`Изображение товара ${index + 1}`}
                     />
                   </div>

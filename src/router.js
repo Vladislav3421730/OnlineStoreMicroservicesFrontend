@@ -13,6 +13,7 @@ import { Products } from './pages/Products';
 import { Registration } from './pages/Registration';
 import { Account } from './pages/Account/Account';
 import { CartPage } from './pages/CartPage';
+import { Gallery } from './pages/Gallery/Gallery';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Layout />}>
@@ -23,9 +24,10 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path="orders/:id" element={<OrderPage />} loader={orderLoader} errorElement={<ErrorPage />} />
     <Route path="admin/panel" element={<AdminPage />} />
     <Route path="user/orders/:id" element={<UserOrders />} />
-    <Route path='registration' element={<Registration />} />
-    <Route path='account' element={<Account />} />
-    <Route path='cart' element={<CartPage />} />
+    <Route path="registration" element={<Registration />} />
+    <Route path="gallery" element={<Gallery />} />
+    <Route path="account" element={<Account />} />
+    <Route path="cart" element={<CartPage />} />
     <Route path="login" element={<LoginPage />} />
     <Route path="error403" element={<ErrorForbidden />} />
   </Route>

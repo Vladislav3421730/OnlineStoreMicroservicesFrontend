@@ -1,10 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
 import "./Header.css";
 import { useAuth } from "../../hook/useAuth";
+import { ACCOUNT_IMAGE_URL, BUCKET_IMAGE_URL } from "../../config";
 
 const Header = () => {
 
-  const { isAdmin, isManager, isAuthorized, logout } = useAuth()
+  const { isAdmin, isManager, isAuthorized } = useAuth()
 
   return (
     <header>
@@ -14,6 +15,7 @@ const Header = () => {
           {(isAdmin || isManager) && <NavLink className="inscription" to="/admin/panel">Пользователи</NavLink>}
           {isManager &&
             <>
+              <NavLink className="inscription" to="/gallery">Галерея</NavLink>
               <NavLink className="inscription" to="/orders">Заказы</NavLink>
               <NavLink className="inscription" to="/products">Продукты</NavLink>
             </>
@@ -22,11 +24,11 @@ const Header = () => {
           {isAuthorized ? (
             <>
               <Link to="/cart">
-                <img className="image" src="https://png.klev.club/uploads/posts/2024-04/png-klev-club-z0k5-p-korzina-belaya-png-9.png"/>
+                <img className="image" src={BUCKET_IMAGE_URL}/>
               </Link>
               <Link to="/account" >
               <img class="profileImage"
-                  src="https://cdn4.iconfinder.com/data/icons/popular-ui/24/23_ui_user_interface_user_account_avatar_profile_web_ios-512.png"/>
+                  src={ACCOUNT_IMAGE_URL}/>
               </Link>
             </>
           ) : (

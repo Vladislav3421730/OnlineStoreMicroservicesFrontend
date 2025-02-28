@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../api";
+import { getProducts } from "../apiMarket";
 import { FadeLoader } from "react-spinners";
 import { CustomPagination } from "../components/Pagination";
 import { CustomModal } from "../components/CustomModal";
 import { Filters } from "../components/Filters";
 import { Link } from "react-router-dom";
-import { api } from "../api";
+import { api } from "../apiMarket";
 import { useAuth } from "../hook/useAuth";
 
 const Products = () => {
@@ -37,6 +37,10 @@ const Products = () => {
 
     useEffect(() => {
         getProducts(setProducts, setTotalPages, setLoading, currentPage, filters);
+    }, [currentPage]);
+
+    useEffect(() => {
+        setError('');
     }, [currentPage]);
 
     const applyFilters = () => {

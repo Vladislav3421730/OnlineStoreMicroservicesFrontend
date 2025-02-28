@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners";
-import { getUsers, api, getUserByEmail } from "../api";
+import { getUsers, api, getUserByEmail } from "../apiMarket";
 import { CustomPagination } from "../components/Pagination";
 import { Link } from "react-router-dom";
 import { CustomModal } from "../components/CustomModal";
@@ -25,6 +25,10 @@ const AdminPage = () => {
             setCurrentPage(newPage);
         }
     };
+
+    useEffect(() => {
+        setError('');
+    }, [currentPage]);
 
     const handleSearch = () => {
         setSearchEmail(email);

@@ -1,8 +1,10 @@
-import { api } from '../../api';
+import { api } from '../../apiMarket';
 import { Link, useLoaderData } from 'react-router-dom';
 import { useState } from 'react';
 import './OrderPage.css';
 import { CustomModal } from '../../components/CustomModal';
+import { API_IMAGE_BASE_URL } from "../../config";
+
 
 export const orderLoader = async ({ params }) => {
     const { id } = params;
@@ -91,7 +93,7 @@ const OrderPage = () => {
                                     />
                                 ) : (
                                     <img
-                                        src={`http://localhost:8082/upload/${orderItem.product.imageList[0].filePath}`}
+                                        src={`${API_IMAGE_BASE_URL}/${orderItem.product.imageList[0].filePath}`}
                                         alt={orderItem.product.title}
                                         className="card-img-top"
                                     />
