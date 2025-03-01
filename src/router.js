@@ -15,11 +15,13 @@ import { Account } from './pages/Account/Account';
 import { CartPage } from './pages/CartPage';
 import { Gallery } from './pages/Gallery/Gallery';
 import { AddProductPage } from './pages/AddProductPage/AddProductPage';
+import { EditProductPage } from './pages/EditProductPage';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Layout />}>
     <Route index element={<Homepage />} />
     <Route path="products" element={<Products />} />
+    <Route path='products/edit/:id' element={<EditProductPage/>} loader={productLoader} errorElement={<ErrorPage/>}/>
     <Route path="products/:id" element={<ProductPage />} loader={productLoader} errorElement={<ErrorPage />} />
     <Route path="products/add" element={<AddProductPage/>}/>
     <Route path="orders" element={<OrdersPage />} errorElement={<ErrorPage />} />

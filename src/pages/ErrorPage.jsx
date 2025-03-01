@@ -4,7 +4,7 @@ import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 const ErrorPage = () => {
   const error = useRouteError();
 
-  const status = isRouteErrorResponse(error) ? error.status : 500;
+  const status = isRouteErrorResponse(error) ? error.status : "Неизвестная ошибка";
   const message = isRouteErrorResponse(error)
     ? error.data?.message || "Что-то пошло не так!"
     : "Произошла неожиданная ошибка.";

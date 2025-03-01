@@ -150,6 +150,7 @@ const Products = () => {
                                                 <th scope="col">Цена</th>
                                                 <th scope="col">Количество</th>
                                                 <th scope="col">Категория</th>
+                                                <th scope="col">Редактирование</th>
                                                 <th scope="col">Удаление</th>
                                                 <th scope="col">Подробнее</th>
                                             </tr>
@@ -164,12 +165,15 @@ const Products = () => {
                                                     <td>{product.amount}</td>
                                                     <td>{product.category}</td>
                                                     <td>
+                                                        <Link to={`/products/edit/${product.id}`} className="btn btn-primary">Редактировать</Link>
+                                                    </td>
+                                                    <td>
                                                         <button onClick={() => handleDeleteClick(product.id)} className="btn btn-danger">
                                                             Удалить
                                                         </button>
                                                     </td>
                                                     <td>
-                                                        <Link to={`/products/${product.id}`} className="btn btn-primary">Подробнее</Link>
+                                                        <Link to={`/products/${product.id}`} className="btn btn-success">Подробнее</Link>
                                                     </td>
                                                 </tr>
                                             ))}

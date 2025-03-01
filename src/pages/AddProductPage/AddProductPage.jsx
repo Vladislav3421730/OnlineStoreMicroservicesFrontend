@@ -8,7 +8,7 @@ const MAX_FILE_SIZE_MB = 2;
 const AddProductPage = () => {
     const [error, setError] = useState("");
     const [images, setImages] = useState([]);
-    const [product, setproduct] = useState({
+    const [product, setProduct] = useState({
         title: "",
         category: "",
         description: "",
@@ -18,7 +18,7 @@ const AddProductPage = () => {
 
     const handleproductChange = (e) => {
         const { name, value } = e.target;
-        setproduct((prevproduct) => ({
+        setProduct((prevproduct) => ({
             ...prevproduct,
             [name]: value,
         }));
@@ -84,7 +84,7 @@ const AddProductPage = () => {
     
 
     return (
-        <div className="edit-product">
+        <>
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="d-flex">
@@ -148,11 +148,11 @@ const AddProductPage = () => {
                         <h3>Изображения</h3>
                         <div className="row">
                             {images.map((image, index) => (
-                                <div key={image.id} className="col-lg-4 col-md-6 col-sm-6">
-                                    <div className="card mt-2 mb-2" style={{ width: "15.5rem", height: "20.5rem" }}>
+                                <div key={image.id} className="col-lg-3 col-md-6 col-sm-6">
+                                    <div className="card mt-2 mb-2" style={{ width: "12.5rem", height: "18.5rem" }}>
                                         <img
                                             src={image.preview || `${API_IMAGE_BASE_URL}/${image.filePath}`}
-                                            style={{ width: "15.5rem", height: "13rem" }}
+                                            style={{ width: "12.5rem", height: "13rem" }}
                                             className="card-img-top"
                                             alt="product"
                                         />
@@ -166,14 +166,14 @@ const AddProductPage = () => {
                                         <div className="card-body">
                                             <div className="d-flex justify-content-center mt-2">
                                                 <button
-                                                    className="btn btn-success mx-3"
+                                                    className="btn btn-success mx-1"
                                                     onClick={() => document.getElementById(`upload-${image.id}`).click()}
                                                     type="button"
                                                 >
                                                     Заменить
                                                 </button>
                                                 <button
-                                                    className="btn btn-danger mx-3"
+                                                    className="btn btn-danger"
                                                     onClick={() => handleDelete(image.id)}
                                                     type="button"
                                                 >
@@ -194,7 +194,7 @@ const AddProductPage = () => {
                     <button type="button" className="btn btn-danger mx-3" onClick={() => window.location.href = '/products'}>Отмена</button>
                 </div>
             </form>
-        </div>
+        </>
     );
 };
 
