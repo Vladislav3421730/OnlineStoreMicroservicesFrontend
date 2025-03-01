@@ -45,8 +45,6 @@ export async function getProducts(setProducts, setTotalPages, setLoading, curren
     if (category) queryParams += `&category=${category}`;
     if (minPrice) queryParams += `&minPrice=${minPrice}`;
     if (maxPrice) queryParams += `&maxPrice=${maxPrice}`;
-    console.log(queryParams);
-
     api
         .get(`/products${queryParams}`)
         .then((response) => {
@@ -157,18 +155,6 @@ export async function getUserData(setUser, setCarts) {
         if (setCarts != undefined) {
             setCarts(response.data.carts)
         }
-    } catch (error) {
-        console.error("Error: ", error);
-    }
-};
-
-export async function addProductTocart(id) {
-    try {
-        const response = await api.post(`cart/add/${id}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-        });
     } catch (error) {
         console.error("Error: ", error);
     }

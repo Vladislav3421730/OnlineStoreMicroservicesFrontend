@@ -8,7 +8,7 @@ const api = axios.create({
 export async function getImages(setImages, setTotalPages, setLoading, currentPage) {
     setLoading(true);
     api
-        .get(`/all?page=${currentPage}&pageSize=20`)
+        .get(`/all?page=${currentPage}&pageSize=23`)
         .then((response) => {
             setImages(response.data.content);
             setTotalPages(response.data.totalPages);

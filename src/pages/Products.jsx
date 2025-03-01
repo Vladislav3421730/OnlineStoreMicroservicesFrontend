@@ -18,7 +18,7 @@ const Products = () => {
     const [openFilters, setOpenFilters] = useState(false);
     const [openDeleting, setOpenDeleting] = useState(false);
     const [deleteProductId, setDeleteProductId] = useState(null);
-    const {isAuthorized} = useAuth()
+    const { isAuthorized } = useAuth()
     const [filters, setFilters] = useState({
         sort: "",
         title: "",
@@ -90,7 +90,7 @@ const Products = () => {
     return (
         <>
             <CustomModal open={openDeleting} onClose={() => setOpenDeleting(false)}>
-                <button onClick={()=>handleDelete(deleteProductId)} className="btn btn-primary">Потвердите действие</button>
+                <button onClick={() => handleDelete(deleteProductId)} className="btn btn-primary">Потвердите действие</button>
             </CustomModal>
             <div className="container-fluid mt-4">
                 <section>
@@ -150,7 +150,6 @@ const Products = () => {
                                                 <th scope="col">Цена</th>
                                                 <th scope="col">Количество</th>
                                                 <th scope="col">Категория</th>
-                                                <th scope="col">Редактирование</th>
                                                 <th scope="col">Удаление</th>
                                                 <th scope="col">Подробнее</th>
                                             </tr>
@@ -164,9 +163,6 @@ const Products = () => {
                                                     <td>{product.coast}</td>
                                                     <td>{product.amount}</td>
                                                     <td>{product.category}</td>
-                                                    <td>
-                                                        <Link to={'/products/edit'} className="btn btn-success" >Редактировать</Link>
-                                                    </td>
                                                     <td>
                                                         <button onClick={() => handleDeleteClick(product.id)} className="btn btn-danger">
                                                             Удалить

@@ -49,10 +49,10 @@ const Account = () => {
           <>
             <h3>Ваши заказы:</h3>
             <div className="row">
-              {user.orders.map((order, index) => (
+              {user.orders.map((order) => (
                 <div key={order.id} className="col-12 mb-4">
                   <div className="card-body">
-                    <h4>Заказ №{index + 1}</h4>
+                    <h4>Заказ №{order.id}</h4>
                     <p>Дата создания: {order.createdAt}</p>
                     <p className="mb-2 mt-2">Статус
                       <p className={order.status == 'доставлен' ? 'delivered mx-2' : 'status mx-2'} >{order.status}</p>

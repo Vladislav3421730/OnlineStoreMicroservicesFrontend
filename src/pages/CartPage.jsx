@@ -13,7 +13,7 @@ const CartPage = () => {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        getUserData(setUser, setCarts);
+        getUserData(setUser, setCarts)
     }, []);
 
     const updateCart = (updatedCart) => {
@@ -40,17 +40,18 @@ const CartPage = () => {
 
     const totalCoast = carts
         .map((cart) => cart.product.coast * cart.amount)
-        .reduce((total, currentPrice) => total + currentPrice, 0);
+        .reduce((total, currentPrice) => total + currentPrice, 0)
+        .toFixed(2)
 
-        const addresses = [
-            ...new Map(user.orders.map((order) => JSON.stringify(order.address)).map((e) => [e, e])).values()
-          ].map((e) => JSON.parse(e));
-          
+    const addresses = [
+        ...new Map(user.orders.map((order) => JSON.stringify(order.address)).map((e) => [e, e])).values()
+    ].map((e) => JSON.parse(e));
+
 
     return (
         <div className="container-fluid mt-4">
-            {message && <p style={{color : "green"}}>{message}</p>}
-            {error && <p style={{color : "red"}}>{error}</p>}
+            {message && <p style={{ color: "green" }}>{message}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <CustomModal open={open} onClose={() => setOpen(false)}>
                 <Address
                     setError={setError}
@@ -79,7 +80,7 @@ const CartPage = () => {
                             ))}
                         </div>
                         <div class="mt-2 mb-2 d-flex">
-                            <button type="button" onClick={()=>setOpen(true)} className="btn btn-primary mx-3">
+                            <button type="button" onClick={() => setOpen(true)} className="btn btn-primary mx-3">
                                 Сделать заказ {totalCoast}
                             </button>
                         </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { api } from '../../apiImage';
 
-const UploadFile = ({setMessage,setError}) => {
+const UploadFile = ({setMessage,setError, setImages}) => {
     const [fileName, setFileName] = useState(null); 
     const [file, setFile] = useState(null); 
 
@@ -26,7 +26,9 @@ const UploadFile = ({setMessage,setError}) => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            setImages((prevImages)=>[...prevImages, response.data])
             setMessage("Файл был загружен успешно")
+
             console.log(response.data);
         } catch (error) {
             setError(error.reponse?.data)

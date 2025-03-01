@@ -18,7 +18,7 @@ const AdminPage = () => {
     const [email, setEmail] = useState('');
     const [searchEmail, setSearchEmail] = useState('');
 
-    const { isAdmin, isAuthorized } = useAuth();
+    const { isAdmin, isAuthorized, isManager } = useAuth();
 
     const handlePageChange = (newPage) => {
         if (newPage >= 0 && newPage < totalPages) {
@@ -122,7 +122,7 @@ const AdminPage = () => {
         } else {
             getUsers(currentPage, setUsers, setTotalPages, setLoading);
         }
-    }, [currentPage,searchEmail]);
+    }, [currentPage, searchEmail]);
 
     return (
         <div className="container mt-4">
@@ -163,7 +163,9 @@ const AdminPage = () => {
 
                                     </>
                                 )}
-                                <th scope="col">Заказы</th>
+                                {isManager &&
+                                    <th scope="col">Заказы</th>
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -193,9 +195,11 @@ const AdminPage = () => {
                                             </td>
                                         </>
                                     )}
-                                    <td>
-                                        <Link to={`/user/orders/${user.id}`} className="btn btn-primary">Заказы</Link>
-                                    </td>
+                                    {isManager &&
+                                        <td>
+                                            <Link to={`/user/orders/${user.id}`} className="btn btn-primary">Заказы</Link>
+                                        </td>
+                                    }
                                 </tr>
                             ))}
                         </tbody>

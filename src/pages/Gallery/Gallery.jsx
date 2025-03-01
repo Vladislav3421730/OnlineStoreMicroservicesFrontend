@@ -52,8 +52,6 @@ const Gallery = () => {
         }
     };
 
-
-
     const handleDelete = (id) => {
         api
             .delete(`/${id}`)
@@ -64,7 +62,6 @@ const Gallery = () => {
                 console.log(error.response?.data)
             })
     }
-
 
     return (
         <>
@@ -80,7 +77,7 @@ const Gallery = () => {
                             <div className="row">
                                 {message && <p style={{ color: "green" }}>{message}</p>}
                                 {error && <p style={{ color: "red" }}>{error}</p>}
-                                <UploadFile setError={setError} setMessage={setMessage} />
+                                <UploadFile setImages={setImages} setError={setError} setMessage={setMessage} />
                                 {images.map((image) => (
                                     <div key={image.id} className="col-lg-3 col-md-4 col-sm-6">
                                         <div className="col-lg-3 col-md-6">
@@ -117,7 +114,6 @@ const Gallery = () => {
                 </div>
             )}
         </>
-
     );
 };
 

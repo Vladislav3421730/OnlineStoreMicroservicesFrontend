@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { api } from "../../apiMarket";
 import { useState } from "react";
-import { API_IMAGE_BASE_URL,NO_PHOTO_URL } from "../../config";
+import { API_IMAGE_BASE_URL, NO_PHOTO_URL } from "../../config";
 import "./CartInBusket.css";
 
 const CartInBusket = ({ cart, index, updateCart }) => {
@@ -9,9 +9,9 @@ const CartInBusket = ({ cart, index, updateCart }) => {
 
     const handleIncrement = async (index) => {
         try {
-            await api.put(`cart/increment/${index}`, {
+            const response = await api.put(`cart/increment/${index}`, {}, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             });
             setAmount(amount + 1);
@@ -23,9 +23,9 @@ const CartInBusket = ({ cart, index, updateCart }) => {
 
     const handleDelete = async (index) => {
         try {
-            await api.delete(`cart/delete/${index}`, {
+            const response = await api.delete(`cart/delete/${index}`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
             });
             updateCart({ ...cart, amount: 0 });
@@ -35,16 +35,21 @@ const CartInBusket = ({ cart, index, updateCart }) => {
     };
 
     const handleDecrement = async (index) => {
-        await api.put(`cart/decrement/${index}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-        });
-        if (amount === 1) {
-            updateCart({ ...cart, amount: 0 });
-        } else {
-            setAmount(amount - 1);
-            updateCart({ ...cart, amount: amount - 1 });
+        try {
+            const response = await api.put(`cart/decrement/${index}`,{}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                },
+            });
+            if (amount === 1) {
+                updateCart({ ...cart, amount: 0 });
+            } else {
+                setAmount(amount - 1);
+                updateCart({ ...cart, amount: amount - 1 });
+            }
+        }
+        catch (error) {
+            console.log(error);
         }
     };
 
@@ -74,7 +79,8 @@ const CartInBusket = ({ cart, index, updateCart }) => {
                         <span>Количество: </span>
                         <button className="minus-button" onClick={() => handleDecrement(index)}>-</button>
                         {amount} <br />
-                        <button className="plus-button" onClick={() => handleIncrement(index)} disabled={cart.product.amount === 0}>+</button>
+                        <button className="plus-button" onClick={() => handleIncrement(index)} 
+                        disabled={cart.product.amount === 0 || cart.product.amount===amount}>+</button>
                     </div>
                     {cart.product.amount === 0 ? (
                         <span>Нет в наличии</span>

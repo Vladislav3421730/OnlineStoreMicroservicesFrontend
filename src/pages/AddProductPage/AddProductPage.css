@@ -1,0 +1,24 @@
+.add-product {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.form-product {
+    width: 480px;
+    height: auto;
+    max-height: 500px;
+    padding: 20px;
+    margin: 20px;
+    background-color: antiquewhite;
+    border: 0px solid black;
+    border-radius: 20px;
+}
+#file-input {
+    display: flex;
+    justify-content: space-between;
+}
+#file-window{
+    display: flex;
+    flex-direction: column;
+}

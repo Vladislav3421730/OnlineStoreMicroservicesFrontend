@@ -23,6 +23,19 @@ export const productLoader = async ({ params }) => {
 const ProductPage = () => {
   const product = useLoaderData();
 
+  const handleAdd = async (id) => {
+    try {
+      const response = await api.post(`cart/add/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error: ", error.response?.data);
+
+    }
+  };
+
   return (
     <div className="container-fluid mt-4">
       <div className="row">
@@ -103,7 +116,8 @@ const ProductPage = () => {
                   : `Осталось на складе: ${product.amount}`}
               </p>
             </div>
-            <button type="submit" className="btn btn-primary mt-2 mb-2">
+            <button type="submit" onClick={() => { handleAdd(product.id) }} className="btn btn-primary mt-2 mb-2"
+              disabled={product.amount === 0}>
               Добавить в корзину
             </button>
           </div>
