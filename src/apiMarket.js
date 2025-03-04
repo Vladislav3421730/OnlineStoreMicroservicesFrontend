@@ -35,7 +35,6 @@ api.interceptors.response.use(
     }
 );
 
-
 export async function getProducts(setProducts, setTotalPages, setLoading, currentPage, filters) {
     setLoading(true);
     const { sort, title, category, minPrice, maxPrice } = filters;

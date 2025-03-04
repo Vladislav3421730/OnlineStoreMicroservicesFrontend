@@ -1,13 +1,26 @@
-import { useEffect, useState } from "react";
+
 import { api } from "../../apiMarket";
 import './Account.css'
 import '../OrderPage/OrderPage.css'
 import { FadeLoader } from "react-spinners";
-import { getUserData } from "../../apiMarket";
 import { API_IMAGE_BASE_URL, NO_PHOTO_URL } from "../../config";
+import { useQuery } from "@tanstack/react-query";
 
 const Account = () => {
-  const [user, setUser] = useState(null);
+
+  const getUserData = async () => {
+    const response = await api.get("user", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data
+  };
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: 'user',
+    queryFn: ()=> getUserData()
+  })
 
   const handleLogout = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -19,13 +32,7 @@ const Account = () => {
     window.location.href = "/"
   }
 
-  useEffect(() => {
-    getUserData(setUser);
-  }, []);
-
-
-
-  if (!user) {
+  if (isLoading) {
     return
     <div className="d-flex justify-content-center align-items-center" style={{ height: "50vh" }}>
       <FadeLoader height={16} radius={6} width={5} />
