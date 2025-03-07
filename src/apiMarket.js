@@ -14,17 +14,16 @@ api.interceptors.response.use(
 
         if (error.response && error.response.status === 403) {
             window.location.href = '/error403';
-            return;
+            return Promise.reject(error);
         }
 
         console.log("Interceptor caught an error:", error.response?.status, originalRequest?.url);
-
 
         if (error.response && error.response.status === 401) {
 
             if (originalRequest.url === '/auth/refreshToken') {
                 localStorage.removeItem('accessToken');
-                localStorage.rempveItem('refreshToken');
+                localStorage.removeItem('refreshToken');
                 window.location.href = '/login';
                 return Promise.reject(error);
             }
@@ -34,7 +33,7 @@ api.interceptors.response.use(
 
             if (!refreshToken) {
                 window.location.href = '/login';
-                return;
+                return Promise.reject(error);
             }
             const refreshResponse = await api.post('/auth/refreshToken', { refreshToken });
             localStorage.setItem('accessToken', refreshResponse.data.accessToken);
@@ -43,7 +42,7 @@ api.interceptors.response.use(
             originalRequest.headers['Authorization'] = `Bearer ${refreshResponse.data.accessToken}`;
             return api(originalRequest);
         }
-        return;
+        return Promise.reject(error);
     }
 );
 
