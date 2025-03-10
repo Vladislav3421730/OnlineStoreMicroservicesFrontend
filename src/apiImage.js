@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_IMAGE_BASE_URL } from "./config";
 
 const api = axios.create({
-    baseURL: "http://localhost:8082/upload",
+    baseURL: API_IMAGE_BASE_URL,
     timeout: 10000,
 });
 
