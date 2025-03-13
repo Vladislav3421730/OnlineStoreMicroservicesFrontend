@@ -23,7 +23,9 @@ api.interceptors.response.use(
             if (originalRequest.url === '/auth/refreshToken') {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
-                window.location.href = '/login';
+                if (window.location.pathname !== '/') {
+                    window.location.href = '/login';
+                }
                 return Promise.reject(error);
             }
 
