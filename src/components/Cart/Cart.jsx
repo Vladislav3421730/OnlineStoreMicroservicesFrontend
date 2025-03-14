@@ -20,7 +20,7 @@ const Cart = ({ product }) => {
       setAdded("Добавлено в корзину");
       setTimeout(() => setAdded(false), 1300);
     } catch (error) {
-      if (!error.response?.status === 401) {
+      if (!error.response?.status !== 401) {
         setError(error.response?.data?.message || "Ошибка");
         setTimeout(() => setError(false), 3000);
       }
