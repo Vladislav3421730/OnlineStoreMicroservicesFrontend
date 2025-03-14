@@ -41,6 +41,7 @@ const Address = ({ addresses, totalCoast,setCarts, setError, setMessage, setOpen
             address: address,
             totalCoast : totalCoast
         })
+        setError("")
         setMessage(response.data.message)
         setCarts([])
         }
