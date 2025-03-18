@@ -59,7 +59,7 @@ const PasswordEditing = ({ setOpen, id, logout }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            {serverError && <div className="alert alert-danger">{serverError}</div>}
+            {serverError && <div className="text-danger">{serverError}</div>}
 
             <label className="form-label">Текущий пароль</label>
             <input

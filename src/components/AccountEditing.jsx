@@ -3,6 +3,7 @@ import { api } from "../apiMarket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AccountEditing = ({ setOpen, user, logout }) => {
+
     const [updatedUser, setUpdatedUser] = useState({
         id: user.id,
         email: user.email,
@@ -11,6 +12,7 @@ const AccountEditing = ({ setOpen, user, logout }) => {
     });
 
     const [fieldErrors, setFieldErrors] = useState({});
+    const [serverError, setServerError] = useState("");
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
@@ -32,10 +34,17 @@ const AccountEditing = ({ setOpen, user, logout }) => {
             console.error("Ошибка обновления профиля", error.response?.data || error.message);
 
             const errorData = error.response?.data;
+
             if (errorData?.errors) {
+                setServerError("");
                 setFieldErrors(errorData.errors);
-            } else {
+            } else if (errorData?.message) {
                 setFieldErrors({});
+                setServerError(errorData.message);
+            }
+            else {
+                setFieldErrors({});
+                setServerError("Не удалось обновить профиль. Попробуйте позже.");
             }
         },
     });
@@ -55,8 +64,8 @@ const AccountEditing = ({ setOpen, user, logout }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            {mutation.isError && !fieldErrors && (
-                <p className="text-danger">{mutation.error.response?.data?.message || mutation.error.message}</p>
+            {serverError && (
+                <p className="text-danger">{serverError}</p>
             )}
 
             <label htmlFor="email" className="form-label">Email</label>
