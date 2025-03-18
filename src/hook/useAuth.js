@@ -18,7 +18,7 @@ const useAuth = () => {
                 return;
             }
             try {
-                const response = await api.get("user", {
+                const response = await api.get("profile", {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
                 setAuthorized(true);

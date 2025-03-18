@@ -62,6 +62,7 @@ const EditProductPage = () => {
                     onChange={handleProductInfoChange}
                     value={productInfo.title}
                     required
+                    minLength={3}
                 />
                 {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
 
@@ -70,6 +71,7 @@ const EditProductPage = () => {
                     className="form-control"
                     type="text"
                     name="category"
+                    minLength={3}
                     onChange={handleProductInfoChange}
                     value={productInfo.category}
                     required
@@ -83,6 +85,7 @@ const EditProductPage = () => {
                     onChange={handleProductInfoChange}
                     value={productInfo.description}
                     required
+                    minLength={10}
                 />
                 {errors.description && <p style={{ color: "red" }}>{errors.description}</p>}
 

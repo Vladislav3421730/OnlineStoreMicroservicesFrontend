@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { api } from "../apiMarket"; 
+import { api } from "../apiMarket";
 
 const Registration = () => {
     const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ const Registration = () => {
     });
 
     const [error, setError] = useState("");
+    const [fieldErrors, setFieldErrors] = useState({});
 
     useEffect(() => {
         if (error) {
@@ -40,11 +41,16 @@ const Registration = () => {
             }
         } catch (err) {
             console.error("Ошибка регистрации:", err.response?.data);
-            setError(err.response?.data?.message || "Произошла ошибка при регистрации")
+            const errorData = err.response?.data;
+            if (errorData?.errors) {
+                setFieldErrors(errorData.errors);
+            } else {
+                setError(errorData?.message || "Произошла ошибка при регистрации");
+                setFieldErrors({});
+            }
         }
     };
     
-
     return (
         <div className="container mt-5 mb-5">
             <div className="row justify-content-center">
@@ -58,20 +64,22 @@ const Registration = () => {
                                     <label htmlFor="username">Имя пользователя</label>
                                     <input
                                         type="text"
-                                        className="form-control mt-1"
+                                        className={`form-control mt-1 ${fieldErrors.username ? 'is-invalid' : ''}`}
                                         name="username"
                                         id="username"
+                                        minLength={3}
                                         placeholder="Введите имя пользователя"
                                         value={formData.username}
                                         onChange={handleChange}
                                         required
                                     />
+                                    {fieldErrors.username && <div className="invalid-feedback">{fieldErrors.username}</div>}
                                 </div>
                                 <div className="form-group mb-2">
                                     <label htmlFor="email">Email</label>
                                     <input
                                         type="email"
-                                        className="form-control mt-1"
+                                        className={`form-control mt-1 ${fieldErrors.email ? 'is-invalid' : ''}`}
                                         name="email"
                                         id="email"
                                         placeholder="Введите email"
@@ -79,12 +87,13 @@ const Registration = () => {
                                         onChange={handleChange}
                                         required
                                     />
+                                    {fieldErrors.email && <div className="invalid-feedback">{fieldErrors.email}</div>}
                                 </div>
                                 <div className="form-group mb-2">
                                     <label htmlFor="phoneNumber">Телефон</label>
                                     <input
                                         type="text"
-                                        className="form-control mt-1"
+                                        className={`form-control mt-1 ${fieldErrors.phoneNumber ? 'is-invalid' : ''}`}
                                         name="phoneNumber"
                                         id="phoneNumber"
                                         placeholder="+375XXXXXXXXX"
@@ -92,25 +101,28 @@ const Registration = () => {
                                         value={formData.phoneNumber}
                                         onChange={handleChange}
                                     />
+                                    {fieldErrors.phoneNumber && <div className="invalid-feedback">{fieldErrors.phoneNumber}</div>}
                                 </div>
                                 <div className="form-group mb-2">
                                     <label htmlFor="register-password">Пароль</label>
                                     <input
                                         type="password"
-                                        className="form-control mt-1"
+                                        className={`form-control mt-1 ${fieldErrors.password ? 'is-invalid' : ''}`}
                                         name="password"
+                                        minLength={6}
                                         id="register-password"
                                         placeholder="Введите пароль"
                                         value={formData.password}
                                         onChange={handleChange}
                                         required
                                     />
+                                    {fieldErrors.password && <div className="invalid-feedback">{fieldErrors.password}</div>}
                                 </div>
                                 <div className="form-group mb-2">
                                     <label htmlFor="confirmPassword">Подтверждение пароля</label>
                                     <input
                                         type="password"
-                                        className="form-control mt-1"
+                                        className={`form-control mt-1 ${fieldErrors.confirmPassword ? 'is-invalid' : ''}`}
                                         name="confirmPassword"
                                         id="confirmPassword"
                                         placeholder="Повторите пароль"
@@ -118,6 +130,7 @@ const Registration = () => {
                                         onChange={handleChange}
                                         required
                                     />
+                                    {fieldErrors.confirmPassword && <div className="invalid-feedback">{fieldErrors.confirmPassword}</div>}
                                 </div>
                                 <button type="submit" className="btn btn-primary btn-block mt-2">
                                     Зарегистрироваться

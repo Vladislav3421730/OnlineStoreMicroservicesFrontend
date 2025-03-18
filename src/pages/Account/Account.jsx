@@ -1,15 +1,21 @@
-
 import { api } from "../../apiMarket";
 import './Account.css'
 import '../OrderPage/OrderPage.css'
 import { FadeLoader } from "react-spinners";
 import { API_IMAGE_BASE_URL, NO_PHOTO_URL } from "../../config";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { CustomModal } from "../../components/CustomModal";
+import { AccountEditing } from "../../components/AccountEditing";
+import { PasswordEditing } from "../../components/PasswordEditing";
 
 const Account = () => {
 
+  const [open, setOpen] = useState(false)
+  const [openPassowrd, setOpenPassword] = useState(false);
+
   const getUserData = async () => {
-    const response = await api.get("user", {
+    const response = await api.get("profile", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -19,17 +25,17 @@ const Account = () => {
 
   const { data: user, isLoading } = useQuery({
     queryKey: 'user',
-    queryFn: ()=> getUserData()
+    queryFn: () => getUserData()
   })
 
-  const handleLogout = async () => {
+  const handleLogout = async (redirectValue) => {
     const refreshToken = localStorage.getItem('refreshToken');
     await api.delete("auth/logout", {
       data: { refreshToken }
     });
     localStorage.removeItem("accessToken")
     localStorage.removeItem("refreshToken")
-    window.location.href = "/"
+    window.location.href = redirectValue;
   }
 
   if (isLoading) {
@@ -41,9 +47,17 @@ const Account = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex align-items-center">
-        <h2>Личный кабинет</h2>
-        <button onClick={handleLogout} className="mx-4 btn btn-danger">Выйти</button>
+       <CustomModal open={open} onClose={() => setOpen(false)}>
+              <AccountEditing setOpen={setOpen} user={user} logout={()=>handleLogout("/login")}/>
+      </CustomModal>
+      <CustomModal open={openPassowrd} onClose={() => setOpenPassword(false)}>
+              <PasswordEditing setOpen={setOpenPassword} id={user.id} logout={()=>handleLogout("/login")}/>
+      </CustomModal>
+      <h2>Личный кабинет</h2>
+      <div className="d-flex my-3">
+        <button onClick={() => handleLogout("/")} className="btn btn-danger">Выйти</button>
+        <button onClick={() => setOpen(true)} className="mx-3 btn btn-success">Редактировать профиль</button>
+        <button onClick={() => setOpenPassword(true)} className="mx-2 btn btn-primary">Сменить пароль</button>
       </div>
       <p>Имя пользователя: {user.username}</p>
       <p>Email: {user.email}</p>

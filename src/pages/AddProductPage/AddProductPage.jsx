@@ -99,6 +99,7 @@ const AddProductPage = () => {
                             onChange={handleproductChange}
                             value={product.title}
                             required
+                            minLength={3}
                         />
 
                         <label className="form-label">Категория</label>
@@ -109,6 +110,7 @@ const AddProductPage = () => {
                             onChange={handleproductChange}
                             value={product.category}
                             required
+                            minLength={3}
                         />
 
                         <label className="form-label">Описание</label>
@@ -118,6 +120,7 @@ const AddProductPage = () => {
                             onChange={handleproductChange}
                             value={product.description}
                             required
+                            minLength={10}
                         />
 
                         <label className="form-label">Количество</label>

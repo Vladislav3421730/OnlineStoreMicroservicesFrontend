@@ -157,7 +157,7 @@ export async function getUserOrders(id, page, setOrders, setTotalPages, setLoadi
 
 export async function getUserData(setUser, setCarts) {
     try {
-        const response = await api.get("user", {
+        const response = await api.get("profile", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
