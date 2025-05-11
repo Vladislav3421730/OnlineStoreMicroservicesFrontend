@@ -36,7 +36,7 @@ const CartInBusket = ({ cart, index, updateCart }) => {
 
     const handleDecrement = async (index) => {
         try {
-            const response = await api.put(`cart/decrement/${index}`,{}, {
+            const response = await api.put(`cart/decrement/${index}`, {}, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                 },
@@ -73,14 +73,32 @@ const CartInBusket = ({ cart, index, updateCart }) => {
                     )}
                 </Link>
                 <div className="card-body">
-                    <span>{cart.product.title}</span><br />
-                    <span>{cart.product.coast}</span><br />
+                    <strong>
+                        {cart.product.discount > 0 ? (
+                            <>
+                                <span className="text-muted text-decoration-line-through me-2">
+                                    {cart.product.price} BYN
+                                </span>
+                                <span className="text-danger">
+                                    {(cart.product.price * (1 - cart.product.discount / 100)).toFixed(2)} BYN                                </span>
+                            </>
+                        ) : (
+                            <>
+                                {cart.product.price} BYN
+                            </>
+                        )}
+                    </strong>
+                    <br />
+                    <span>{cart.product.title}</span>
+                    {cart.product.discount > 0 && (
+                        <span className="badge bg-success ms-2">-{cart.product.discount}%</span>
+                    )}
                     <div className="d-flex justify-content-start align-items-center">
                         <span>Количество: </span>
                         <button className="minus-button" onClick={() => handleDecrement(index)}>-</button>
                         {amount} <br />
-                        <button className="plus-button" onClick={() => handleIncrement(index)} 
-                        disabled={cart.product.amount === 0 || cart.product.amount===amount}>+</button>
+                        <button className="plus-button" onClick={() => handleIncrement(index)}
+                            disabled={cart.product.amount === 0 || cart.product.amount === amount}>+</button>
                     </div>
                     {cart.product.amount === 0 ? (
                         <span>Нет в наличии</span>

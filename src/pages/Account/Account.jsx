@@ -82,7 +82,7 @@ const Account = () => {
                       Адрес: {order.address.region}, {order.address.town},{" "}
                       {order.address.exactAddress}
                     </p>
-                    <p>Итого: {order.totalPrice} руб.</p>
+                    <p>Итого: <strong> {order.totalPrice} руб. </strong></p>
                     <h5 className="mb-4">Товары:</h5>
                     <div className="row">
                       {order.orderItems.map((orderItem) => (
@@ -109,9 +109,27 @@ const Account = () => {
                               }
                             </a>
                             <div className="card-body">
-                              <strong>{orderItem.product.coast} руб.</strong>
-                              <br />
-                              {orderItem.product.title}
+                            <strong>
+                                    {orderItem.product.discount > 0 ? (
+                                        <>
+                                            <span className="text-muted text-decoration-line-through me-2">
+                                                {orderItem.product.price} BYN
+                                            </span>
+                                            <span className="text-danger">
+                                                {(orderItem.product.price * (1 - 
+                                                    orderItem.product.discount / 100)).toFixed(2)} BYN                                </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {orderItem.product.price} BYN
+                                        </>
+                                    )}
+                                </strong>
+                                <br />
+                                <span>{orderItem.product.title}</span>
+                                {orderItem.product.discount > 0 && (
+                                    <span className="badge bg-success ms-2">-{orderItem.product.discount}%</span>
+                                )}
                               <br />
                               {orderItem.product.category}
                               <br />

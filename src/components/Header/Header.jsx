@@ -12,12 +12,14 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg bg-dark">
         <NavLink className="inscription" to="/" style={{ marginInline: "10px" }}>Главная</NavLink>
         <div className="users-buttons">
+          <NavLink className="inscription" to="/us">О нас</NavLink>
           {(isAdmin || isManager) && <NavLink className="inscription" to="/admin/panel">Пользователи</NavLink>}
           {isManager &&
             <>
               <NavLink className="inscription" to="/gallery">Галерея</NavLink>
               <NavLink className="inscription" to="/orders">Заказы</NavLink>
               <NavLink className="inscription" to="/products">Продукты</NavLink>
+              <NavLink className="inscription" to="/analytics">Аналитика</NavLink>
             </>
           }
 

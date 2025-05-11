@@ -161,7 +161,7 @@ const Products = () => {
                                                     <th scope="row">{index + 1}</th>
                                                     <td>{product.id}</td>
                                                     <td>{product.title}</td>
-                                                    <td>{product.coast}</td>
+                                                    <td>{product.price}</td>
                                                     <td>{product.amount}</td>
                                                     <td>{product.category}</td>
                                                     <td>

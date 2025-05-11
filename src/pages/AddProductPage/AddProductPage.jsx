@@ -13,7 +13,7 @@ const AddProductPage = () => {
         category: "",
         description: "",
         amount: "",
-        coast: "",
+        price: "",
     });
 
     const handleproductChange = (e) => {
@@ -56,9 +56,9 @@ const AddProductPage = () => {
             category: e.target.category.value,
             description: e.target.description.value,
             amount: e.target.amount.value,
-            coast: e.target.coast.value,
+            price: e.target.price.value,
         };
-
+        console.log(productData)
         formData.append("product", new Blob([JSON.stringify(productData)], { type: "application/json" }));
     
         images.forEach((image) => {
@@ -138,9 +138,9 @@ const AddProductPage = () => {
                         <input
                             className="form-control"
                             type="number"
-                            name="coast"
+                            name="price"
                             onChange={handleproductChange}
-                            value={product.coast}
+                            value={product.price}
                             min="0.01"
                             step="0.01"
                             required

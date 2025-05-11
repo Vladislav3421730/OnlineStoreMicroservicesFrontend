@@ -62,6 +62,31 @@ const AdminPage = () => {
         }
     }
 
+    const handleLoyal = async (id) => {
+        try {
+            const response = await api.put(`user/loyal/${id}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
+            if (response.status === 204) {
+                setUsers((prevUsers) =>
+                    prevUsers.map((u) =>
+                        u.id === id ? { ...u, isLoyal: !u.isLoyal } : u
+                    )
+                );
+                setError('')
+            }
+        } catch (error) {
+            console.log("Error: ", error.response.data)
+            if (error.response?.data?.code === 403) {
+                window.location.href = '/error403';
+                return
+            }
+            setError(error.response?.data?.message || 'Ошибка при бане/разбане пользователя')
+        }
+    }
+
     const handleDelete = async (id) => {
         try {
             const response = await api.delete(`user/delete/${id}`, {
@@ -170,12 +195,12 @@ const AdminPage = () => {
                                     <th scope="col">логин</th>
                                     <th scope="col">email</th>
                                     <th scope="col">Телефон</th>
+                                    <th scope="col">Лояльность</th>
                                     {isAdmin && (
                                         <>
                                             <th scope="col">Бан</th>
                                             <th scope="col">Удалить</th>
                                             <th scope="col">Менеджер</th>
-
                                         </>
                                     )}
                                     {isManager &&
@@ -191,6 +216,10 @@ const AdminPage = () => {
                                         <th>{user.username}</th>
                                         <td>{user.email}</td>
                                         <td>{user.phoneNumber}</td>
+                                        <td>
+                                            <button onClick={() => handleLoyal(user.id)} className={!user.isLoyal ? 'btn btn-danger' : 'btn btn-success'}>
+                                                {user.isLoyal ? 'Внести' : 'Удалить'}</button>
+                                        </td>
                                         {isAdmin && (
                                             <>
                                                 <td>

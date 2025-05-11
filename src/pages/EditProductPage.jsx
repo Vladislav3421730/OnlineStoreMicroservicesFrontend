@@ -13,7 +13,9 @@ const EditProductPage = () => {
         category: product.category,
         description: product.description,
         amount: product.amount,
-        coast: product.coast
+        price: product.price,
+        discount: product.  discount,
+        priority : product.priority
     });
 
     const handleProductInfoChange = (e) => {
@@ -51,7 +53,7 @@ const EditProductPage = () => {
                 </div>
             )}
 
-            <form className="form-product" onSubmit={handleSubmit}>
+            <form className="form-product"  onSubmit={handleSubmit}>
                 <h2>Редактировать продукт</h2>
 
                 <label className="form-label">Название продукта</label>
@@ -105,14 +107,40 @@ const EditProductPage = () => {
                 <input
                     className="form-control"
                     type="number"
-                    name="coast"
+                    name="price"
                     onChange={handleProductInfoChange}
-                    value={productInfo.coast}
+                    value={productInfo.price}
                     min="0.01"
                     step="0.01"
                     required
                 />
-                {errors.coast && <p style={{ color: "red" }}>{errors.coast}</p>}
+                {errors.price && <p style={{ color: "red" }}>{errors.price}</p>}
+
+                <label className="form-label">Приоритет</label>
+                <input
+                    className="form-control"
+                    type="number"
+                    name="priority"
+                    onChange={handleProductInfoChange}
+                    value={productInfo.priority}
+                    min="0"
+                    step="1"
+                    required
+                />
+                {errors.priority && <p style={{ color: "red" }}>{errors.priority}</p>}
+
+                <label className="form-label">Скидка</label>
+                <input
+                    className="form-control"
+                    type="number"
+                    name="discount"
+                    onChange={handleProductInfoChange}
+                    value={productInfo.discount}
+                    min="0"
+                    step="0.01"
+                    required
+                />
+                {errors.discount && <p style={{ color: "red" }}>{errors.discount}</p>}
 
                 <div className="d-flex mt-2 mb-2">
                     <button type="submit" className="btn btn-primary">Сохранить</button>

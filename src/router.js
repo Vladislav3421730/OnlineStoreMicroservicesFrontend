@@ -17,6 +17,8 @@ import { Gallery } from './pages/Gallery/Gallery';
 import { AddProductPage } from './pages/AddProductPage/AddProductPage';
 import { EditProductPage } from './pages/EditProductPage';
 import { PrivateRoute } from './components/PrivateRoute';
+import { Analytics } from './pages/Analytics';
+import AboutUs from './pages/AbousUs/AboutUs';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<Layout />}>
@@ -25,16 +27,18 @@ const router = createBrowserRouter(createRoutesFromElements(
       <PrivateRoute>
         <Products />
       </PrivateRoute>} />
-    <Route path='products/edit/:id' element={<EditProductPage />} loader={productLoader} errorElement={<ErrorPage />} />
+    <Route path='analytics' element={<Analytics />} />
+    <Route path='products/edit/:id' element={<PrivateRoute><EditProductPage /> </PrivateRoute>} loader={productLoader} errorElement={<ErrorPage />} />
     <Route path="products/:id" element={<ProductPage />} loader={productLoader} errorElement={<ErrorPage />} />
-    <Route path="products/add" element={<AddProductPage />} />
+    <Route path="products/add" element={<PrivateRoute> <AddProductPage /> </PrivateRoute>} />
     <Route path="orders" element={<OrdersPage />} errorElement={<ErrorPage />} />
     <Route path="orders/:id" element={<OrderPage />} loader={orderLoader} errorElement={<ErrorPage />} />
     <Route path="admin/panel" element={<AdminPage />} />
     <Route path="user/orders/:id" element={<UserOrders />} />
     <Route path="registration" element={<Registration />} />
-    <Route path="gallery" element={<Gallery />} />
+    <Route path="gallery" element={<PrivateRoute><Gallery /> </PrivateRoute>} />
     <Route path="account" element={<Account />} />
+    <Route path="us" element={<AboutUs />} />
     <Route path="cart" element={<CartPage />} />
     <Route path="login" element={<LoginPage />} />
     <Route path="error403" element={<ErrorForbidden />} />

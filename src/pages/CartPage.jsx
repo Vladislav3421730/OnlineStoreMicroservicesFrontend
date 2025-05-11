@@ -39,7 +39,7 @@ const CartPage = () => {
     }
 
     const totalCoast = carts
-        .map((cart) => cart.product.coast * cart.amount)
+        .map((cart) => cart.product.price * (1- (cart.product.discount /100)) * cart.amount )
         .reduce((total, currentPrice) => total + currentPrice, 0)
         .toFixed(2)
 
@@ -68,6 +68,8 @@ const CartPage = () => {
                 <div className="row">
                     <div className="col-lg-1 col-md-0"></div>
                     <div className="col-lg-10 col-md-12">
+                        {(user.isLoyal)
+                            && <h2>Вы есть в системе лояльности, ваша скидка 10%</h2>}
                         <div className="row">
                             {carts.map((cart, index) => (
                                 <div key={cart.id} className="col-lg-3 col-md-4 col-sm-6">
@@ -81,7 +83,18 @@ const CartPage = () => {
                         </div>
                         <div class="mt-2 mb-2 d-flex">
                             <button type="button" onClick={() => setOpen(true)} className="btn btn-primary mx-3">
-                                Сделать заказ {totalCoast}
+                                {user.isLoyal ? (
+                                    <>
+                                        <span className="text-decoration-line-through me-2">
+                                            {totalCoast} BYN
+                                        </span>
+                                        <strong> {(totalCoast * 0.9).toFixed(2)} BYN </strong>
+                                    </>
+                                ) : (
+                                    <>
+                                        {totalCoast} BYN
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>

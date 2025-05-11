@@ -106,8 +106,27 @@ const ProductPage = () => {
           )}
           <div className="d-flex justify-content-between align-items-center">
             <div>
-              <h4>{product.coast} ₽</h4>
-              <h5>{product.title}</h5>
+              <strong>
+                {product.discount > 0 ? (
+                  <>
+                    <span className="text-muted text-decoration-line-through me-2">
+                      {product.price} BYN
+                    </span>
+                    <span className="text-danger">
+                      {(product.price * (1 -
+                        product.discount / 100)).toFixed(2)} BYN </span>
+                  </>
+                ) : (
+                  <>
+                    {product.price} BYN
+                  </>
+                )}
+              </strong>
+              <br />
+              <span>{product.title}</span>
+              {product.discount > 0 && (
+                <span className="badge bg-success ms-2">-{product.discount}%</span>
+              )}
               <p className="card-text">Категория: {product.category}</p>
               <p className="text-justify">{product.description}</p>
               <p className="card-text">

@@ -6,7 +6,6 @@ import { CustomPagination } from "../components/Pagination";
 import { CustomModal } from "../components/CustomModal";
 import { Filters } from "../components/Filters";
 
-
 const Homepage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,6 +20,9 @@ const Homepage = () => {
     maxPrice: "",
   });
 
+  const [currency, setCurrency] = useState("BYN");
+  const [rates, setRates] = useState({});
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
@@ -32,6 +34,20 @@ const Homepage = () => {
   useEffect(() => {
     getProducts(setProducts, setTotalPages, setLoading, currentPage, filters);
   }, [currentPage]);
+
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const response = await fetch(`https://v6.exchangerate-api.com/v6/2c9f6d71a48fd0535f65a37b/latest/BYN`);
+        const data = await response.json();
+        setRates(data.conversion_rates);
+      } catch (error) {
+        console.error('Ошибка загрузки курсов валют', error);
+      }
+    };
+
+    fetchRates();
+  }, []);
 
   const applyFilters = () => {
     getProducts(setProducts, setTotalPages, setLoading, currentPage, filters);
@@ -55,33 +71,48 @@ const Homepage = () => {
           <div className="row">
             <div className="col-lg-1 col-md-0"></div>
             <div className="col-lg-10 col-md-12">
+              <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="form-select w-auto mx-2">
+                <option value="BYN">BYN</option>
+                <option value="RUB">RUB</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+              </select>
               <div className="d-flex justify-content-around align-items-center mt-3 mb-3">
-              <div className="input-group w-100 mx-2">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    name="title"
-                    value={filters.title}
-                    onChange={handleFilterChange}
-                    placeholder="Поиск по названию"
-                    className="form-control"
-                  />
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    id="button-addon2"
-                    onClick={applyFilters}
-                  >
-                    Найти
-                  </button>
+                <div className="input-group w-100 mx-2">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      name="title"
+                      value={filters.title}
+                      onChange={handleFilterChange}
+                      placeholder="Поиск по названию"
+                      className="form-control"
+                    />
+                    <button
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      id="button-addon2"
+                      onClick={applyFilters}
+                    >
+                      Найти
+                    </button>
+                  </div>
+                  <CustomModal open={open} onClose={() => setOpen(false)}>
+                    <Filters
+                      filters={filters}
+                      applyFilters={applyFilters}
+                      handleFilterChange={handleFilterChange}
+                    />
+                  </CustomModal>
                 </div>
-                <CustomModal open={open} onClose={() => setOpen(false)}>
-                  <Filters filters={filters} applyFilters={applyFilters} handleFilterChange={handleFilterChange} />
-                </CustomModal>
-              </div>
-              <button onClick={handleOnClickFilter} className="btn btn-primary">
-                Фильтры
-              </button>
+                <button
+                  onClick={handleOnClickFilter}
+                  className="btn btn-primary"
+                >
+                  Фильтры
+                </button>
               </div>
               {loading ? (
                 <div
@@ -100,7 +131,7 @@ const Homepage = () => {
                         key={product.id}
                         className="col-lg-3 col-md-4 col-sm-6"
                       >
-                        <Cart product={product} />
+                        <Cart product={product} currency={currency} rates={rates} />
                       </div>
                     ))}
                   </div>
